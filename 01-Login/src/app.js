@@ -17,7 +17,7 @@ export class App {
     this.router.configure(config => {
       config.map([
         {
-          route: 'public-route',
+          route: ['', 'public-route'],
           name: 'public',
           moduleId: './public-route'
         },
@@ -26,7 +26,7 @@ export class App {
           name: 'private',
           moduleId: './private-route'
         }
-      ])
+      ]);
     });
     this.http.configure(config => {
       config.withDefaults({
