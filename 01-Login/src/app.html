@@ -1,6 +1,6 @@
 <template>
   <h1>${message}</h1>
-  <button click.delegate="login()" if.bind="!isAuthenticate">Log In</button>
+  <button click.delegate="login()" if.bind="!isAuthenticated">Log In</button>
   <button click.delegate="logout()" if.bind="isAuthenticated">Log Out</button>
   <hr>
   <button click.delegate="getSecretThing()" if.bind="isAuthenticated">Get Secret Thing</button>
