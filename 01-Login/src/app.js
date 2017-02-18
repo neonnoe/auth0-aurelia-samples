@@ -1,5 +1,5 @@
 import {inject} from 'aurelia-framework';
-import {HttpClient} from 'aurelia-fetch-client';
+import {HttpClient} from 'aurelia-http-client';
 import {Router} from 'aurelia-router';
 import {tokenIsExpired} from './utils/tokenUtils';
 
@@ -27,13 +27,6 @@ export class App {
           moduleId: './private-route'
         }
       ]);
-    });
-    this.http.configure(config => {
-      config.withDefaults({
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('id_token')}`
-        }
-      });
     });
     
     this.lock.on("authenticated", (authResult) => {
@@ -70,11 +63,8 @@ export class App {
   }
   
   getSecretThing() {
-    this.http.fetch('/api/protected-route', {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('id_token')}`
-      }
-    })
+    this.http.createRequest('/api/protected-route').asGet()
+    .withHeader('Authorization', `Bearer ${localStorage.getItem('id_token')}`).send()
     .then(response => response.json())
     .then(data => this.secretThing = data.text);
   }

@@ -41,6 +41,22 @@ lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN);
 ...
 ```
 
+## Set `Authorization` header on every request 
+
+Use code below in class constructor.
+
+```js
+// src/app.js
+
+this.http.configure(config => {
+    config.withDefaults({
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('id_token')}`
+        }
+    });
+});
+```
+
 ## What is Auth0?
 
 Auth0 helps you to:
