@@ -62,13 +62,6 @@ export class App {
     this.decodedJwt = null;
   }
   
-  getSecretThing() {
-    this.http.createRequest('/api/protected-route').asGet()
-    .withHeader('Authorization', `Bearer ${localStorage.getItem('id_token')}`).send()
-    .then(response => response.json())
-    .then(data => this.secretThing = data.text);
-  }
-  
   getDecodedJwt() {
     let jwt = localStorage.getItem('id_token');
     if(jwt) {

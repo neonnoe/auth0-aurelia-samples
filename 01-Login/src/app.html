@@ -2,9 +2,6 @@
   <h1>${message}</h1>
   <button click.delegate="login()" if.bind="!isAuthenticated">Log In</button>
   <button click.delegate="logout()" if.bind="isAuthenticated">Log Out</button>
-  <hr>
-  <button click.delegate="getSecretThing()" if.bind="isAuthenticated">Get Secret Thing</button>
-  <h3>${secretThing}</h3>
   <button click.delegate="getDecodedJwt()" if.bind="isAuthenticated">Get Decoded JWT</button>
   <pre if.bind="isAuthenticated">${decodedJwt}</pre>
   <hr>
