@@ -1,0 +1,10 @@
+<template>
+  <div>
+    <h4 if.bind="authenticated">
+        You are logged in!
+    </h4>
+    <h4 if.bind="!authenticated">
+      You are not logged in! Please <a click.delegate="auth.login()">Log In</a> to continue.
+    </h4>
+  </div>
+</template>

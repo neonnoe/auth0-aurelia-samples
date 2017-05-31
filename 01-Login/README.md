@@ -1,61 +1,29 @@
-# Auth0 - Aurelia
+# Auth0 Aurelia Login
 
-This sample application demonstrates how to integrate Auth0 with Aurelia.
+This sample demonstrates how to add authentication to a Aurelia application with Auth0. The sample makes use of Auth0's hosted login page which provides centralized authentication.
 
 ## Getting Started
 
-You will need `jspm` to install some of the dependencies.
+If you haven't already done so, [sign up](https://auth0.com) for your free Auth0 account and create a new client in the [dashboard](https://manage.auth0.com). Find the **domain** and **client ID** from the settings area and add the URL for your application to the **Allowed Callback URLs** box.
+
+Clone the repo or download it from the Aurelia quickstart page in Auth0's documentation.
 
 ```bash
-npm install -g jspm
-```
-
-Clone the repo, then:
-
-```bash
+cd 01-Login
 npm install
-jspm install
 ```
 
-Run the application with a web server such as **http-server**.
+## Set the Client ID and Domain
+
+If you download the sample from the quickstart page, it will come pre-populated with the **client ID** and **domain** for your application. If you clone the repo directly from Github, rename the `auth0-variables.js.example` file to `auth0-variables.js` and provide the **client ID** and **domain** there. This file is located in the `src` directory.
+
+## Run the Application
 
 ```bash
-npm install -g http-server
-http-server
+npm start
 ```
 
-## Set Your Auth0 Credentials
-
-If you haven't already done so, [sign up](https://auth0.com/signup) for your free Auth0 account.
-
-Set your credentials in `Auth0Lock`.
-
-
-```js
-// src/app.js
-
-...
-
-lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN);
-
-...
-```
-
-## Set `Authorization` header on every request 
-
-Use code below in class constructor.
-
-```js
-// src/app.js
-
-this.http.configure(config => {
-    config.withDefaults({
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('id_token')}`
-        }
-    });
-});
-```
+The application will be served at `http://localhost:8080`.
 
 ## What is Auth0?
 
@@ -84,3 +52,4 @@ If you have found a bug or if you have a feature request, please report them at 
 ## License
 
 This project is licensed under the MIT license. See the [LICENSE](LICENSE.txt) file for more info.
+

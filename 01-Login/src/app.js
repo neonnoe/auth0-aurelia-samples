@@ -1,75 +1,36 @@
-import {inject} from 'aurelia-framework';
-import {HttpClient} from 'aurelia-http-client';
-import {Router} from 'aurelia-router';
-import {tokenIsExpired} from './utils/tokenUtils';
+import { PLATFORM } from 'aurelia-pal';
+import { inject } from 'aurelia-framework';
+import { AuthService } from './auth-service';
 
-@inject(HttpClient, Router)
+@inject(AuthService)
 export class App {
-  message = 'Auth0 - Aurelia';
-  lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN);
-  isAuthenticated = false;
-  
-  constructor(http, router) {
-    this.http = http;
+  constructor(AuthService) {
+    this.auth = AuthService;
+    this.authenticated = this.auth.isAuthenticated();
+    this.auth.authNotifier.on('authChange', authState => {
+      this.authenticated = authState.authenticated;
+    });
+  }
+  configureRouter(config, router) {
+    config.title = 'Aurelia - Auth0';
+    config.options.pushState = true;
+    config.map([
+      {
+        route: ['', 'home'],
+        name: 'home',
+        moduleId: PLATFORM.moduleName('./home'),
+        nav: true,
+        title: 'Home'
+      },
+      {
+        route: 'callback',
+        name: 'callback',
+        moduleId: PLATFORM.moduleName('./callback'),
+        nav: false,
+        title: 'Callback'
+      }
+    ]);
+
     this.router = router;
-    var self = this;
-    
-    this.router.configure(config => {
-      config.map([
-        {
-          route: ['', 'public-route'],
-          name: 'public',
-          moduleId: './public-route'
-        },
-        {
-          route: 'private-route',
-          name: 'private',
-          moduleId: './private-route'
-        }
-      ]);
-    });
-    
-    this.lock.on("authenticated", (authResult) => {
-      self.lock.getProfile(authResult.idToken, (error, profile) => {
-        if (error) {
-          // Handle error
-          return;
-        }
-
-        localStorage.setItem('id_token', authResult.idToken);
-        localStorage.setItem('profile', JSON.stringify(profile));
-        self.isAuthenticated = true;
-        self.lock.hide();
-      });
-    });
-
-    if(tokenIsExpired())  {
-      this.isAuthenticated = false;
-    }
-    else {
-      this.isAuthenticated = true;
-    }
   }
-  
-  login() {
-    this.lock.show();   
-  }
-  
-  logout() {
-    localStorage.removeItem('profile');
-    localStorage.removeItem('id_token');
-    this.isAuthenticated = false;   
-    this.decodedJwt = null;
-  }
-  
-  getDecodedJwt() {
-    let jwt = localStorage.getItem('id_token');
-    if(jwt) {
-      this.decodedJwt = JSON.stringify(jwt_decode(jwt), null, 2);
-    }
-    else {
-      this.decodedJwt = "No JWT Saved";
-    }
-  }
- 
 }
