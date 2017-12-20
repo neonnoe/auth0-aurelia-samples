@@ -23,7 +23,7 @@ If you download the sample from the quickstart page, it will come pre-populated 
 npm start
 ```
 
-The application will be served at `http://localhost:8080`.
+The application will be served at `http://localhost:3000`.
 
 ## Run the Application With Docker
 
