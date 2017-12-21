@@ -6,7 +6,13 @@ import {tokenIsExpired} from './utils/tokenUtils';
 @inject(HttpClient, Router)
 export class App {
   message = 'Auth0 - Aurelia';
-  lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN);
+
+  lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN, {
+    autoclose: true,
+    auth: { 
+      redirect : false
+    }});
+
   isAuthenticated = false;
   
   constructor(http, router) {
@@ -30,16 +36,16 @@ export class App {
     });
     
     this.lock.on("authenticated", (authResult) => {
-      self.lock.getProfile(authResult.idToken, (error, profile) => {
+      self.lock.getUserInfo(authResult.accessToken, (error, profile) => {
         if (error) {
           // Handle error
           return;
         }
 
         localStorage.setItem('id_token', authResult.idToken);
+        localStorage.setItem('access_token', authResult.accessToken);
         localStorage.setItem('profile', JSON.stringify(profile));
         self.isAuthenticated = true;
-        self.lock.hide();
       });
     });
 
@@ -58,6 +64,7 @@ export class App {
   logout() {
     localStorage.removeItem('profile');
     localStorage.removeItem('id_token');
+    localStorage.removeItem('access_token');
     this.isAuthenticated = false;   
     this.decodedJwt = null;
   }
