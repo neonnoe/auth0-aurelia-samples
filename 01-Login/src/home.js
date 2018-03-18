@@ -5,5 +5,6 @@ import { AuthService } from './auth-service';
 export class Home {
   constructor(AuthService) {
     this.auth = AuthService;
+    console.log(this.auth);
   }
 }

@@ -40,6 +40,7 @@ export class AuthService {
 
   setSession(authResult) {
     // Set the time that the access token will expire at
+    console.log(authResult);
     let expiresAt = JSON.stringify(
       authResult.expiresIn * 1000 + new Date().getTime()
     );
